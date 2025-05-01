@@ -1,0 +1,48 @@
+\documentclass[handout, aspectratio=169]{beamer}
+\usepackage[orientation=landscape,size=custom,width=16,height=9,scale=0.4,debug]{beamerposter} 
+
+\input{materials/commands_pkg}
+\input{materials/commands_math}
+\input{materials/commands_theme}
+
+\graphicspath{{materials/figs}}
+\usepackage{relsize}
+\usepackage{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage[dvipsnames]{xcolor}
+
+\mode<presentation>
+{
+   \usetheme{Berlin}
+    \usecolortheme{seahorse}
+    \setbeamertemplate{itemize item}    
+    {\color{darkgray}$\blacktriangleright$}
+    \setbeamertemplate{itemize subitem}{\color{lightgray}$\blacksquare$}
+}
+
+\newcommand{\redIMP}[1]{\color{NordOrange} #1}
+\newcommand{\blueIMP}[1]{\color{NordMagenta} #1}
+
+\definecolor{greentitle}{RGB}{126,169,105}
+\definecolor{redtitle}{RGB}{26,69,15}
+\definecolor{bluetitle}{RGB}{30,30,100}
+\definecolor{title1}{RGB}{50,50,50}
+
+\begin{document}
+
+\begin{frame}
+    \textbf{Slide 01 - Title:}
+    
+    Good Afternoon, everyone. I am Kumar Anurag from the University of New Mexico, and today I'm excited to present our work on resilient tracking in autonomous vehicles using a framework we call DRISE - Distributionally Robust Input and State Estimation.
+
+    This work is in collaboration with Kasra Azizi and my advisor Prof. Wenbin Wan.
+\end{frame}
+
+
+
+
+
+\end{document}
