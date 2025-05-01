@@ -1,0 +1,459 @@
+\documentclass[handout, aspectratio=169]{beamer}
+%\documentclass[aspectratio=169]{beamer}
+\usepackage[orientation=landscape,size=custom,width=16,height=9,scale=0.4,debug]{beamerposter} 
+
+\input{materials/commands_pkg}
+\input{materials/commands_math}
+\input{materials/commands_theme}
+
+\graphicspath{{materials/figs}}
+\usepackage{relsize}
+\usepackage{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage[dvipsnames]{xcolor}
+
+\mode<presentation>
+{
+   \usetheme{Berlin}
+    \usecolortheme{seahorse}
+    \setbeamertemplate{itemize item}    
+    {\color{darkgray}$\blacktriangleright$}
+    \setbeamertemplate{itemize subitem}{\color{lightgray}$\blacksquare$}
+}
+
+\newcommand{\redIMP}[1]{\color{NordOrange} #1}
+\newcommand{\blueIMP}[1]{\color{NordMagenta} #1}
+
+\definecolor{greentitle}{RGB}{126,169,105}
+\definecolor{redtitle}{RGB}{26,69,15}
+\definecolor{bluetitle}{RGB}{30,30,100}
+\definecolor{title1}{RGB}{50,50,50}
+
+
+% \setbeamercolor{block title}{bg=bluetitle,fg=white}
+
+
+%-----------------
+%   TITLE PAGE
+%-----------------
+\title{Towards Resilient Tracking in Autonomous Vehicles}
+\subtitle{A Distributionally Robust Input \& State Estimation Approach}
+\author{Kasra Azizi, {\blue{\textbf{Kumar Anurag}}}, Wenbin Wan}
+\date{Intelligent Autonomous Vehicles, May 2025}
+
+\addtobeamertemplate{block begin}{%
+  \setlength{\textwidth}{1.2\textwidth}%
+}{}
+
+\addtobeamertemplate{block alerted begin}{%
+  \setlength{\textwidth}{1.2\textwidth}%
+}{}
+
+\addtobeamertemplate{block example begin}{%
+  \setlength{\textwidth}{1.2\textwidth}%
+}{}
+
+\begin{document}
+
+% --- Title Page ---
+% { \usebackgroundtemplate{\includegraphics[width=\paperwidth]{figs/titlepic.png}} % Ensure path is correct
+{\usebackgroundtemplate{\includegraphics[width=\paperwidth]{figs/titlepic.png}}
+\begin{frame}[plain,noframenumbering]
+  \maketitle
+\end{frame}}
+
+
+\section{Introduction}
+\begin{frame}
+    \frametitle{\smaller{Introduction: Problem \& Solution}}
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}            
+            \includegraphics[width=\textwidth]{figs/car environment}   
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+        \begin{tcolorbox}[colbacktitle=title1, title=\textbf{The Problem: AV Safety Imperative}]
+                \begin{itemize}
+                    \item<1-> \textbf{Safety} \pause
+                    \item<2-> \textbf{State Data} \pause
+                    \item<3-> \textbf{Noisy Measurements}
+                \end{itemize}
+            \end{tcolorbox}
+            
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{The Solution: State Estimation}]
+                \begin{itemize}
+                    \item<4-> \textbf{Fuse Data} \pause
+                    \item<5-> \textbf{Estimate State Using Model} \pause
+                    \item<6-> \textbf{Ensure Reliability}
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+
+    \end{columns}
+\end{frame}
+
+% --- Baseline Estimators (Version 2) ---
+\section{Baseline Estimators}
+% --- Slide for ISE ---
+\begin{frame}
+  \frametitle{\smaller{Baseline: Input \& State Estimation (ISE)}}
+  \begin{columns}[T]
+    \begin{column}{0.65\textwidth}
+        \begin{tcolorbox}[colbacktitle=greentitle, title=\textbf{Core Idea}]
+            \begin{itemize}
+                \item<1-> \textbf{Joint Estimation} \pause
+                \item<2-> \textbf{State \& Unknown Input} \pause
+                \item<3-> \textbf{Enhance Prediction} \pause
+                \item<4-> \textbf{Improve Accuracy w/ Unmodeled Dynamics}
+            \end{itemize}
+        \end{tcolorbox}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+        \begin{tcolorbox}[colbacktitle=redtitle, title=\textbf{Key Limitation}]
+             \textbf{Sensitive To:}
+                \begin{itemize}
+                    \item<5-> \textbf{Non-Linearity} \pause
+                    \item<6-> \textbf{Non-Gaussian Noise} \pause
+                    \item<7-> \textbf{Outliers}
+                \end{itemize}
+        \end{tcolorbox}
+     \end{column}
+ \end{columns}
+\end{frame}
+
+% --- Slide for DRE ---
+\begin{frame}
+  \frametitle{\smaller{Baseline: Distributionally Robust Estimation (DRE)}}
+   \begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+     \begin{tcolorbox}[colbacktitle=greentitle, title=\textbf{Core Idea}]
+        \begin{itemize}
+            \item<1-> \textbf{Robustness} \pause
+            \item<2-> \textbf{Deviating Noise Distributions} \pause
+            \item<3-> \textbf{Ambiguity Sets} \pause
+            \item<4-> \textbf{Worst-Case Optimization}
+        \end{itemize}
+    \end{tcolorbox}
+         \end{column}
+     \begin{column}{0.4\textwidth}
+    \begin{tcolorbox}[colbacktitle=redtitle,title=\textbf{Key Limitation}]
+        \begin{itemize}
+             \item<5-> \textbf{Sensitive to Outliers} \pause
+            \item<6-> \textbf{Ignores Unknown Inputs}
+        \end{itemize}
+    \end{tcolorbox}
+     \end{column}
+ \end{columns}
+\end{frame}
+
+
+\section{DRISE}
+% --- Problem Formulation ---
+\begin{frame}[fragile] % Fragile for math
+    \frametitle{\smaller{Problem Formulation}}
+    \begin{columns}[T]
+\begin{column}{0.6\textwidth}
+    \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Linear Time-Varying System with Uncertainties}]
+        \textbf{System Model:}
+        {\smaller
+        \begin{align*}
+        \vx_{k+1} &= \mA_k\vx_k + \mB_k\vu_k + \mG_k{\redIMP\vd_k} + {\redIMP\vw_k} \pause \\
+        \vy_k &= \mC_k\vx_k + {\redIMP \vv_k} \pause
+        \end{align*}        }
+    \end{tcolorbox}
+\end{column}
+    \begin{column}{0.4\textwidth}
+         \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Key Terms:}]        
+            \begin{itemize}        
+                \item $\vd_k$:  Unknown Input \pause
+                \item $\vw_k$:Uncertain Distribution \pause        
+                \item $\vv_k$: Uncertain Distribution \pause
+                 \item $\vy_k$: Outliers
+            \end{itemize}
+        \end{tcolorbox}
+    \end{column}
+\end{columns}     
+\end{frame}
+
+
+% ---  Building Block 1 ---
+\begin{frame}[fragile]
+  \frametitle{\smaller{Building Block 1: Unknown Input Estimation}}
+    \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Handling $\vd_k$}]
+        \begin{itemize}
+            \item<1-> \textbf{Problem:} Unmodeled Forces $\vd_k$. \pause
+            \item<2-> \textbf{Mechanism:} Input Estimation Step in Algorithm. \pause
+        \end{itemize}
+        \only<4->{ % Reveal math after points
+            \textbf{Key Formula:}
+             {\smaller \[ \hat{\vd}_{k-1} = \mM_k(\vy_k - \mC_k\hat{\vx}_k^{-}) \] } }
+    \end{tcolorbox}
+    \pause
+  \begin{tcolorbox}[colbacktitle=redtitle, title=\textbf{Addresses:}]
+  Errors from unmodeled dynamics ($\vd_k$).
+   \end{tcolorbox}
+\end{frame}
+
+% ---  Building Block 2 (DRE) ---
+\begin{frame}[fragile]
+  \frametitle{\smaller{Building Block 2: Distributionally Robust Estimation}}
+    \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Handling Noise Uncertainty ($\vw_k, \vv_k$)}]
+        \begin{itemize}
+            \item<1-> \textbf{Problem:} Noise Distributions Deviate. \pause
+            \item<2-> \textbf{Mechanism:} Worst-Case Optimization over  Ambiguity Sets($\mathcal{F}$). \pause
+        \end{itemize}
+        \only<4->{ % Reveal math after points
+            \textbf{Conceptual Objective:}
+             {\smaller \[ \min_{\text{estimator}} \max_{P \in \mathcal{F}} E_P[\text{Error Norm}] \] }              
+        }
+    \end{tcolorbox}
+    \begin{tcolorbox}[colbacktitle=redtitle, title=\textbf{Addresses:}]
+        Performance loss from inexact noise models.
+     \end{tcolorbox}
+\end{frame}
+
+
+% ---Building Block 3 (Robust Statistics) ---
+\begin{frame}[fragile]
+   \frametitle{\smaller{Building Block 3: Robust Update}}
+     \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Handling Measurement Outliers}]
+        \begin{itemize}
+            \item<1-> \textbf{Problem:} Large Measurement Outliers. \pause          
+            \item<2-> \textbf{Mechanism:} Limit The Influence Function $\psi(\cdot)$. \pause
+        \end{itemize}
+        \only<4->{ % Reveal math after points
+            \textbf{Huber influence $\psi(\cdot)$ Formula:}
+            {\smaller \[ \psi(\mu) = \begin{cases} -K, & \mu \le -K \\ \mu, & |\mu| < K \\ K, & \mu \ge K \end{cases} \] } }
+    \end{tcolorbox}
+    \begin{tcolorbox}[colbacktitle=redtitle, title=\textbf{Addresses:}] Corruption of estimates by outliers.
+    \end{tcolorbox}
+ \end{frame}
+
+% --- Slide 7: Block Diagram ---
+\begin{frame}
+    \frametitle{\smaller{DRISE Framework Block Diagram}}
+    \begin{center}
+        \includegraphics[width=\textwidth]{figs/BlockDiagram.pdf} % Ensure this image exists
+    \end{center}
+\end{frame}
+
+
+% --- DRISE Algorithm Cycle Slide ---
+\begin{frame}[fragile] % fragile needed for math environments
+    \frametitle{\smaller{The DRISE Algorithm Cycle}} % Keep the title concise
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Key Steps}]
+                \begin{enumerate}
+                    \item \textbf{Prediction} \vspace{0.75mm} \\ % Condensed text
+                    $ \qquad \qquad \hat{\vx}_k^{-} = \mA_{k-1}\hat{\vx}_{k-1} + \mB_{k-1}\vu_{k-1} $ \pause
+                    \vspace{1mm} % Add space between steps for clarity with pauses
+
+                    \item \textbf{Input Estimation} \vspace{0.75mm} \\ % Condensed text
+                    $\qquad \qquad \hat{\vd}_{k-1} = \mM_k(\vy_k - \mC_k\hat{\vx}_k^{-})$ \pause
+                     \vspace{1mm}
+
+                    \item \textbf{Time Update} \vspace{0.75mm} \\ % Condensed text
+                    $ \qquad \qquad \hat{\vx}_k = \hat{\vx}_k^{-} + \mG_{k-1}\hat{\vd}_{k-1}$ \pause % State estimate after time update
+                     \vspace{1mm}
+
+                    \item \textbf{Robust Measurement Update} \vspace{0.75mm} \\ % Condensed text
+                    $\qquad \qquad \hat{\vx}_k \leftarrow \hat{\vx}_k + \mL_k \psi_k(\mS_k^{-1/2}\vs_k)$ \pause
+                \end{enumerate}
+            \end{tcolorbox}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Notation}]
+                \begin{itemize}
+                    \item $\mM_k$: Input est. gain. \pause
+                    \item $\mL_k$: Robust gain involving ambiguity sets. \pause
+                    \item $\psi_k(\cdot)$: Influence function. \pause
+                    \item $\vs_k=\vy_k-\mC_k\hat{\vx}_k$: Innovation. \pause
+                    \item $\mS_k$: Robust innovation covariance.%
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+% --- Combined Simulation Setup  ---
+\section{Simulation} % Ensure this section exists or adjust as needed
+\begin{frame}[fragile] % fragile needed for math and possibly itemize
+    \frametitle{\smaller{Simulation Setup}} % Concise title
+    \begin{columns}[T] % Use T alignment
+
+       \begin{column}{0.6\textwidth} % Adjust width for the figure
+            \begin{center}
+                 % Ensure this image exists and path is correct
+                 \includegraphics[width=\textwidth]{figs/kinematics.png}                 
+            \end{center}
+       \end{column}
+
+        \begin{column}{0.45\textwidth} % Adjust width for the text box
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Simulation Settings}]
+                \begin{itemize}
+                    \item<2-> \textbf{Model:} Kinematic Bicycle (LTV) \pause
+                    \item<3-> \textbf{States $\vx_k$:} Pos, Yaw, Vels \pause
+                    \item<4-> \textbf{Input $\vu_k$:} Steering, Accel \pause
+                    \item<5-> \textbf{Unknown Input ($\vd_k$):} Time-Varying Signal \pause
+                    \item<6-> \textbf{Noise:} Proc ($\mQ_k$), Meas ($\mR_k$)   \pause
+                    \item<7-> \textbf{Outliers/Deviations:} Included in Tests \pause
+                    \item<8->  \textbf{Comparison:} KF, ISE, DRE \pause
+                \end{itemize}
+            \end{tcolorbox}
+       \end{column}
+    \end{columns}
+\end{frame}
+
+%% --- Simulation ---
+\begin{frame}
+ \frametitle{\smaller{Simulation Environment: CARLA}}    
+\begin{columns}[T]    
+    \begin{column}{0.45\textwidth}
+        \includegraphics[width=\textwidth]{figs/carla.jpg}
+    \end{column}
+  
+    \begin{column}{0.55\textwidth}
+        \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Testing in CARLA Simulator}]
+          \begin{itemize}
+            \item <1-> Open-source, high-fidelity simulator for AV research.
+            \item <2-> Provides realistic urban environments, sensors, and physics.
+            \item <3-> Challenging testbed for evaluating estimator performance under uncertainty.
+        \end{itemize}
+    \end{tcolorbox}
+    \end{column}
+
+    \end{columns}      
+   \end{frame}
+
+
+% --- Results Slide 1: State Estimation Error ---
+\section{Results}
+\begin{frame}
+    \frametitle{\smaller{Results: State Estimation Error}}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth} % Adjust width for figure
+            \includegraphics[width=\textwidth]{figs/AttackEstimationError.pdf} % Figure 2 (Error over time)
+             \captionof{figure}{\smaller{State Estimation Error Norm}} % Add caption
+        \end{column}
+        \begin{column}{0.5\textwidth} % Adjust width for analysis
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Analysis}]
+                \begin{itemize}
+                 \item<1-> \textbf{DRISE:} Lowest Error \pause
+                    \item<2-> \textbf{KF:} Highest Error/Divergence \pause
+                    \item<3-> \textbf{ISE/DRE:} Moderate Error \pause 
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- Results Slide 2: Unknown Input Error ---
+\begin{frame}
+    \frametitle{\smaller{Results: Unknown Input Error}}
+     \begin{columns}[T]
+        \begin{column}{0.5\textwidth} % Adjust width for figure
+             \includegraphics[width=\textwidth]{figs/AttackEstimationError.pdf} % Figure 4 (Input Error over time)
+              \captionof{figure}{\smaller{Unknown Input Estimation Error}}
+        \end{column}
+        \begin{column}{0.5\textwidth} % Adjust width for analysis
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Analysis}]
+                \begin{itemize}
+                   \item<1-> \textbf{DRISE:} Lower Error \pause
+                    \item<2-> \textbf{ISE:} Higher Error \pause
+                    \item<3-> \textbf{Benefit:} Robustness Aids Input Est.
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- Results Slide 3: Trajectory Tracking ---
+\begin{frame}
+    \frametitle{\smaller{Results: Trajectory Tracking}}
+     \begin{columns}[T] % Use columns to place analysis next to figure
+        \begin{column}{0.5\textwidth} % Adjust width for figure
+            \centering % Center the image in its column
+             \includegraphics[width=\textwidth]{figs/Reference_Trajectory_Tracking.pdf} % Figure 3 (Trajectory)
+             \captionof{figure}{\smaller{2D Trajectory Tracking}}
+        \end{column}
+        \begin{column}{0.5\textwidth} % Adjust width for analysis
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Analysis}]
+                \begin{itemize}
+                    \item<1-> \textbf{DRISE:} Best Tracking \pause
+                    \item<2-> \textbf{Others:} Show Drift \pause
+                    \item<3-> \textbf{Link:} Accurate Est. $\rightarrow$ Better Tracking
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- Results Slide 4: Overall Comparison ---
+\begin{frame}
+    \frametitle{\smaller{Results: Overall Comparison}} % Keeping title from draft
+    \begin{tcolorbox}[colbacktitle=title1, title=\textbf{DRISE Performance}] % Changed title slightly for clarity
+        \begin{itemize}
+            \item<1-> \textbf{Superior Accuracy}: Lowest State/Input Errors (RMSE) \pause
+            \item<2-> \textbf{Robustness Confirmed}: Best performance under combined noise/outlier/input challenges \pause
+            \item<3-> \textbf{Practical Benefit}: Enables Most Accurate Trajectory Tracking
+        \end{itemize}
+    \end{tcolorbox}
+    \pause % Pause before benchmark limitations
+    \begin{tcolorbox}[colbacktitle=redtitle, title=\textbf{Benchmark Limits}]
+        \begin{itemize} % Using itemize instead of enumerate for consistency
+            \item<5-> \textbf{KF:} Sensitive to ALL challenges \pause % Overlay number adjusted
+            \item<6-> \textbf{ISE:} Sensitive to Noise/Outliers \pause
+            \item<7-> \textbf{DRE:} Sensitive to Unknown Inputs/Outliers
+        \end{itemize}
+    \end{tcolorbox}
+\end{frame}
+
+
+
+% --- Future Work Slide  ---
+\begin{frame}
+\frametitle{\smaller{Future Work}} % Keep the title
+    \begin{columns}[T] % Use columns for layout
+        \begin{column}{0.55\textwidth} % Adjust width for left column
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Open Questions}] % Title for the left column block
+                \begin{itemize}
+                    \item<1-> \textbf{Parameter Tuning:} How to optimally set $\theta$'s/K in practice? \pause % Concise open question 1
+                    \item<2-> \textbf{Non-Linearity:} Extension to highly non-linear systems? \pause % Concise open question 2
+                    \item<3-> \textbf{Computation:} Real-time performance on embedded hardware? % Concise open question 3
+                \end{itemize}
+            \end{tcolorbox}
+        \end{column}
+
+        \begin{column}{0.45\textwidth} % Adjust width for right column (more space for directions)
+            \begin{tcolorbox}[colbacktitle=title1, title=\textbf{Potential Directions}] % Existing title for the right column block
+                \begin{itemize} % Existing condensed items
+                    \item<4-> \textbf{Explore Ambiguity Sets} \pause % Items appear after left column
+                    \item<5-> \textbf{Non-Linear Systems} \pause
+                    \item<6-> \textbf{Adaptive Parameter Tuning} \pause
+                    \item<7-> \textbf{Other Robotics Apps}
+                \end{itemize}
+            \end{tcolorbox}
+            \end{column}       
+    \end{columns}
+\end{frame}
+
+
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{figs/titlepic.png}}
+\begin{frame}[plain]  
+   \frametitle{\smaller{Thank You}}
+    \begin{center}
+        \Huge \textbf{Questions?}
+    \end{center}
+\end{frame}
+
+
+\end{document}
+ 

@@ -1,0 +1,63 @@
+\usepackage[english]{babel}
+\usepackage{metalogo}
+\usepackage{listings}
+% \usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{subcaption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\definecolor{BK}{HTML}{3b3838}
+\definecolor{Blue}{RGB}{88, 105, 225}
+\newcommand{\BK}[1]{\color{BK} #1}
+\newcommand{\URed}[1]{\color{URed} #1}
+\newcommand{\white}[1]{\color{white} #1}
+\newcommand{\Orange}[1]{\color{QOrange} #1}
+\newcommand{\blue}[1]{\color{blue} #1}
+\newcommand{\Blue}[1]{\color{Blue} #1}
+\newcommand{\red}[1]{\color{red} #1}
+\newcommand{\gray}[1]{\color{gray} #1}
+\newcommand{\orange}[1]{\color{orange} #1}
+\usepackage{accents}
+\newcommand\thickbar[1]{\accentset{\rule{.4em}{.8pt}}{#1}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\hatbar}[1]{\bar{\hat{#1}}}
+\newcommand{\hatubar}[1]{\underaccent{\bar}{\hat{#1}}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bO}[1]{\bf \Orange #1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\YBox}[3]{
+\begin{center}
+\begin{minipage}{#1\linewidth}
+\begin{exampleblock}{#2}
+    #3
+\end{exampleblock}
+\end{minipage}
+\end{center}
+}
+
+\newcommand{\OBox}[3]{
+\begin{center}
+\begin{minipage}{#1\linewidth}
+\begin{block}{#2}
+    #3
+\end{block}
+\end{minipage}
+\end{center}
+}
+
+\newcommand{\Columns}[4]{
+\begin{columns}
+\begin{column}{#1\textwidth}
+#2
+\end{column}
+\begin{column}{#3\textwidth}  %%<--- here
+#4
+\end{column}
+\end{columns}
+}

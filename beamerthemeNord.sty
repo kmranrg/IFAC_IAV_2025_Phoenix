@@ -1,0 +1,78 @@
+\ProvidesPackage{beamerthemeNord}[2020/07/03 v0.1.0 A simple beamer theme using Nord color scheme]
+
+\mode<presentation>
+\RequirePackage{ifthen}
+\RequirePackage{graphicx}
+\usecolortheme{Nord}
+\usefonttheme{Nord}
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=6mm,text margin right=6mm}
+
+\setbeamertemplate{caption}{\insertcaption}
+
+\setbeamertemplate{itemize item}{$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\scalebox{0.6}{$\blacksquare$}}
+\setbeamertemplate{itemize subsubitem}{$\bullet$}
+
+\setbeamertemplate{frametitle}{
+  \nointerlineskip
+    \begin{beamercolorbox}[sep=0.3cm,ht=2em,wd=\paperwidth]{frametitle}
+        \vbox{}\vskip-0.5ex%
+        \strut {\usebeamercolor[fg]{normal text} \ \ \ }\insertframetitle \strut
+        \vskip-0.4ex%
+    \end{beamercolorbox}
+  
+}
+\setbeamertemplate{frametitle continuation}[from second][\insertcontinuationtext]
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{
+  \newbox\nord@tmpbox
+  \setbox\nord@tmpbox\hbox{\insertframenumber/\inserttotalframenumber}
+  \vspace{5.2mm}
+  \hspace{2mm}\noindent\hfill\box\nord@tmpbox\hspace{2mm}
+  \vspace{1.3mm}
+}
+\setbeamertemplate{title page}{
+  \centering
+  \vskip+1ex %3
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\bfseries\boldmath\inserttitle}
+  \ifx\insertsubtitle\@empty\else\\[2em]
+  {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}\fi~\\[3em]
+   \insertauthor\ \ifx\insertinstitute\@empty\else\quad(\insertinstitute)\fi
+  \\[18pt]
+  \insertdate
+%   \begin{beamercolorbox}[sep=0.3cm,ht=2em,wd=\paperwidth]{frametitle}
+%         \vbox{}\vskip-2ex%
+%         \strut {\usebeamercolor[fg]{normal text} \ \ \ }\insertframetitle \strut
+%         \vskip-0.4ex%
+%     \end{beamercolorbox}
+  
+  
+  \renewcommand\thefootnote{\arabic{footnote}}
+  \setcounter{footnote}{0}
+}
+
+% table of contents
+\setbeamertemplate{section in toc}{
+  \inserttocsection\\\smallskip
+}
+\setbeamertemplate{subsection in toc}{~$\ast$~~\inserttocsubsection\\\smallskip}
+\setbeamertemplate{subsection in toc shaded}[default][100]
+
+% block
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\addtobeamertemplate{block begin}{%
+  \setlength{\textwidth}{0.85\textwidth}%
+}{}
+\addtobeamertemplate{block alerted begin}{%
+  \setlength{\textwidth}{0.85\textwidth}%
+}{}
+\addtobeamertemplate{block example begin}{%
+  \setlength{\textwidth}{0.85\textwidth}%
+}{}
+
+
+\mode
+<all>
+
+\endinput
