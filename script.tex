@@ -34,11 +34,33 @@
 \begin{document}
 
 \begin{frame}
+    \textbf{IFAC IAV 2025 - Presentation Script}
+    
+    Written by: K. Anurag
+\end{frame}
+
+\begin{frame}
     \textbf{Slide 01 - Title:}
     
     Good Afternoon, everyone. I am Kumar Anurag from the University of New Mexico, and today I'm excited to present our work on resilient tracking in autonomous vehicles using a framework we call DRISE - Distributionally Robust Input and State Estimation.
 
     This work is in collaboration with Kasra Azizi and my advisor Prof. Wenbin Wan.
+\end{frame}
+
+\begin{frame}
+    \textbf{Slide 02 - Introduction, Problem \& Solution:}
+
+    Today, autonomous vehicles are becoming more common on the road. To keep them safe, they need to know their own condition - like ho wfast they are going, what direction they're facing, or if they're sliding.
+
+    Some of this information is hard to measure directly. For example, the \textbf{sideslip angle} - which shows how much the car is sliding sideways, which is very important for safety, but it's hard to measure with normal sensors.
+
+    Also, low-cost sensors can give \textbf{noisy or wrong data}, especially in bad weather or tricky driving situations.
+
+    So, what's the solution?
+
+    We use \textbf{state estimation}. That means we combine sensor data with a math model of how the vehicle behaves. This helps us guess the hidden values that sensors can't measure directly.
+
+    But this is not always easy. Sometimes the noise is strange, or the environment changes in unexpected ways. So, we need a smarter estimation method - one that works well even when things don't go as planned.
 \end{frame}
 
 
