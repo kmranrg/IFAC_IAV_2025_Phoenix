@@ -77,6 +77,20 @@
     That's why we need something more \textbf{robust}.
 \end{frame}
 
+\begin{frame}
+    \textbf{Slide 04 - Baseline - Distributionally Robust Estimation (DRE)}
 
+    The second method is designed to work \textbf{even when we don't know the exact noise behavior}. For example, if the sensor noise is not perfectly Gaussian - DRE can still give us good estimates.
+
+    How does it do this?
+
+    It basically forms an \textbf{ambiguity set} - which means it doesn't trust one fixed noise model. Instead, it looks at a group of possible noise types and prepares for the \textbf{worst-case} within that group.
+
+    So, that's how DRE deals with non-Gaussian noises.
+
+    But DRE has big limitation too - it \textbf{does not estimate unknown inputs} like ISE does. This means if something unexpected pushes the vehicle - DRE can't tell.
+
+    Also, DRE stil struggles when the measurements contain \textbf{outliers} - large, incorrect, values that can confuse the estimator.
+\end{frame}
 
 \end{document}
