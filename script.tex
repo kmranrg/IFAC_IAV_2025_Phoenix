@@ -37,6 +37,8 @@
     \textbf{IFAC IAV 2025 - Presentation Script}
     
     Written by: K. Anurag
+
+    \textit{kmranrg@unm.edu}
 \end{frame}
 
 \begin{frame}
@@ -63,7 +65,17 @@
     But this is not always easy. Sometimes the noise is strange, or the environment changes in unexpected ways. So, we need a smarter estimation method - one that works well even when things don't go as planned.
 \end{frame}
 
+\begin{frame}
+    \textbf{Slide 03 - Baseline - Input \& State Estimation (ISE):}
+    
+    One popular method we often use is called \textbf{ISE} - Input and State Estimation. It doesn't just estimate the vehicle's internal state. It also tries to guess \textbf{unknown inputs} - like wind or tire slip, or uneven roads, these factors affect the vehicle in unexpected ways. So ISE improves the accuracy by estimating both what we can't see and what we didn't plan for. 
 
+    But there is a problem.
+
+    ISE works well only when the noise follows \textbf{perfect Gaussian distribution}. It can easily break down when we get \textbf{outliers} - like strange or faulty sensor readings.
+
+    That's why we need something more \textbf{robust}.
+\end{frame}
 
 
 
