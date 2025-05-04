@@ -1,11 +1,11 @@
 \documentclass{beamer}
-\usetheme{Madrid} % or Berlin, CambridgeUS, etc.
+\usetheme{CambridgeUS}
 
 \title{DRISE}
 \subtitle{Framework}
 \author{Kumar Anurag}
 \institute{University of New Mexico}
-\date{May 2025}
+\date{May 07, 2025}
 
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -14,7 +14,11 @@
 
 \begin{document}
 \begin{frame}
-Author: Kumar Anurag kmranrg@unm.edu
+Presentation Script
+
+Author: Kumar Anurag
+
+kmranrg@unm.edu
 \end{frame}
 
 \begin{frame}{Slide 01 - Title}
@@ -47,7 +51,9 @@ So, what's the solution?
 We use \textbf{state estimation}. That means we combine sensor data with
 a math model of how the vehicle behaves. This helps us guess the hidden
 values that sensors can't measure directly.
+\end{frame}
 
+\begin{frame}{Slide 02 - Introduction, Problem \& Solution (contd...)}
 But this is not always easy. Sometimes the noise is strange, or the
 environment changes in unexpected ways. So, we need a smarter estimation
 method - one that works well even when things don't go as planned.
@@ -91,7 +97,10 @@ called an \textbf{ambiguity set} - the dotted circle.
 It then prepares for the \textbf{worst-case} distribution inside that
 zone - the \textbf{red star}. That way, even if the real noise is
 strange, our estimates are still safe and reliable.
+\end{frame}
 
+\begin{frame}{Slide 04 - Baseline: Distributionally Robust Estimation
+(DRE) (contd...)}
 However, DRE has some issues. It \textbf{doesn't estimate unknown
 inputs}, like sudden wind or surface friction.
 
@@ -148,7 +157,9 @@ matrix \(M_k\) to get our best guess of the unknown input
 
 This allows us to handle \textbf{unmodeled disturbances}, and helps make
 our state estimation more accurate.
+\end{frame}
 
+\begin{frame}{Slide 06 - Unknown Input Estimation (contd...)}
 \emph{Audience: How \(M_k\) is calculated? \(M_k\) is not a fixed
 constant, but is computed dynamically at each time step based on system
 matrix \(C_k\), state covariance \(P_k\), and measurement covariance
@@ -178,7 +189,9 @@ Mathematically, it looks like this:
 \[\min_{estimator} \max_{P \in \mathcal{F}} \mathbb{E}_P[\text{Error}]\]
 It means: Choose the estimator that gives the best performance - even if
 the true noise is the worst one inside our safe zone.
+\end{frame}
 
+\begin{frame}{Slide 07 - Distributionally Robust Estimation (contd...)}
 This makes the estimation more \textbf{reliable}, even when our noise
 model isn't perfect.
 \end{frame}
@@ -209,7 +222,9 @@ limit \(K\)
 So large deviations don't completely break the estimate. This makes the
 update step much \textbf{more robust}, especially in tough real-world
 conditions.
+\end{frame}
 
+\begin{frame}{Slide 08 - Robust Update (contd...)}
 \emph{Audience: How \(K\) is evaluated? The value of \(K\) is tuned
 empirically. Generally, we set value of \(K\) to \(1.5\) to \(2\) times
 the standard deviation of the innovation (\(\mu\) - measurement
@@ -241,25 +256,10 @@ Using a clipped influence function to finalize the estimate
 \begin{frame}{Slide 10 - The DRISE Algorithm Cycle}
 \protect\hypertarget{slide-10---the-drise-algorithm-cycle}{}
 \begin{enumerate}
-\tightlist
-\item
-  Prediction: First, we predict the next state based on the last
-  estimated state \(x_{k-1}\), and the known control input \(u_{k-1}\).
-  This gives us a rough idea of where the vehicle should be.
-\item
-  Unknown Input Estimation: Next, we estimate the unknown input
-  \(d_{k-1}\) - for example, disturbances like wind or road slope. We do
-  this by comparing what the sensors saw with what we expected, and
-  using the gain matrix \(M_k\).
-\item
-  Time Update: We refine the predicted state using the estimated unknown
-  input. This helps us correct the state before even using the new
-  measurement.
-\item
-  Robust Measurement Update: Finally, we apply a robust correction using
-  the actual measurement. If the measurement seems reliable, we update
-  normally. But if it looks like an outlier, we limit its effect using a
-  clipped influence function \(\psi(\cdot)\).
+\item Prediction: First, we predict the next state based on the last estimated state \(x_{k-1}\), and the known control input \(u_{k-1}\). This gives us a rough idea of where the vehicle should be.
+\item Unknown Input Estimation: Next, we estimate the unknown input \(d_{k-1}\) - for example, disturbances like wind or road slope. We do this by comparing what the sensors saw with what we expected, and using the gain matrix \(M_k\).
+\item Time Update: We refine the predicted state using the estimated unknown input. This helps us correct the state before even using the new measurement.
+\item Robust Measurement Update: Finally, we apply a robust correction using the actual measurement. If the measurement seems reliable, we update normally. But if it looks like an outlier, we limit its effect using a clipped influence function \(\psi(\cdot)\).
 \end{enumerate}
 \end{frame}
 
@@ -285,13 +285,13 @@ uncertainty in how the system evolves. - Measurement noise covariance
 
 And we make the test more challenging by injecting \textbf{outliers} and
 \textbf{noise deviations}.
-
-Finally, we compare our method - \textbf{DRISE} - with three baselines:
-- Kalman Filter - Input and State Estimation - Distributionally Robust
-Estimation
 \end{frame}
 
 \begin{frame}{Slide 11 - Simulation Setup (contd...)}
+Finally, we compare our method - \textbf{DRISE} - with three baselines:
+- Kalman Filter - Input and State Estimation - Distributionally Robust
+Estimation
+
 This setup helps us understand how well DRISE performs under tough and
 realistic conditions.
 \end{frame}
